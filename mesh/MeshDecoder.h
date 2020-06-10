@@ -67,7 +67,7 @@ public:
             int vertexStart = endOfVertex - i * 28;
             glm::vec3 normal(decodeFloat(buffer, vertexStart), decodeFloat(buffer, vertexStart - 4), decodeFloat(buffer, vertexStart - 8));
             glm::vec3 position(decodeFloat(buffer, vertexStart - 16), decodeFloat(buffer, vertexStart - 20), decodeFloat(buffer, vertexStart - 24));
-            glm::vec4 color(buffer[vertexStart - 12], buffer[vertexStart - 13], buffer[vertexStart - 14], buffer[vertexStart - 15]);
+            glm::vec4 color(buffer[vertexStart - 15], buffer[vertexStart - 14], buffer[vertexStart - 13], buffer[vertexStart - 12]);
             color = color / 255.0f;
             (*vertices)[i].color = color;
             (*vertices)[i].position = position;
@@ -82,7 +82,7 @@ public:
         std::cout << "Num Index: ";
         std::cout << numIndex << std::endl;
 
-        unsigned int startIndex = numVertex * 28 + 17;
+        unsigned int startIndex = numVertex * 28 + 18;
         std::cout << "Start Index: 0x";
         printf("%08x", startIndex);
         std::cout << std::endl << std::endl;
@@ -90,7 +90,11 @@ public:
         (*indices).resize(numIndex);
 
         for (int j = 0; j < numIndex; ++j) {
-            unsigned int index = buffer[startIndex + j * 2 + 1] | buffer[startIndex + j * 2] << 8;
+            unsigned int index = buffer[startIndex + j * 2 + 0] | buffer[startIndex + j * 2 + 1] << 8;
+            if (index > numVertex) {
+                printf("%08x", startIndex + j * 2 + 1);
+                std::cout << "HELP" << std::endl;
+            }
             (*indices)[j] = index;
         }
     }

@@ -16,7 +16,17 @@ int main() {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
-    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/unit_cube_centred.mesh", &vertices, &indices);
+    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/component_gate_capacitor.mesh", &vertices, &indices);
+
+    unsigned int vsize = vertices.size();
+    for (int i = 0; i < indices.size(); ++i) {
+        std::cout << indices[i] << " ";
+        indices[i] = vsize - 1 - indices[i];
+        std::cout << indices[i] << " ";
+        if ((i + 1) % 3 == 0) {
+            std::cout << std::endl;
+        }
+    }
 
     std::cout << "Hello Stormworkers" << std::endl;
     // GLFW Init
@@ -80,6 +90,8 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    glEnable(GL_DEPTH_TEST);
+
     // Game Loop
     while (!glfwWindowShouldClose(window)) {
         // input
@@ -87,17 +99,19 @@ int main() {
 
         // rendering commands here
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.use();
 
 
         glm::mat4 model = glm::mat4(1.0f);
-//        model = glm::rotate(model, glm::radians((float) glfwGetTime()*10), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.0f));
+        model = glm::rotate(model, glm::radians((float) glfwGetTime() * 25), glm::vec3(1.0f, 1.0f, 0.0f));
 
         glm::mat4 view = glm::mat4(1.0f);
         // note that we're translating the scene in the reverse direction of where we want to move
-        view = glm::translate(view, glm::vec3(cosf((float) glfwGetTime()), sinf((float) glfwGetTime()), -3.0f));
+//        view = glm::translate(view, glm::vec3(cosf((float) glfwGetTime()), sinf((float) glfwGetTime()), -2.0f));
+//        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
 
         glm::mat4 projection;
         projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
