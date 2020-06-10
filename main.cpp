@@ -4,12 +4,20 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "mesh/MeshDecoder.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 void processInput(GLFWwindow *window);
 
 int main() {
+
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+
+    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/unit_cube_centred.mesh", &vertices, &indices);
+    std::cout << vertices[6].position.x;
+    return 0;
     std::cout << "Hello Stormworkers" << std::endl;
     // GLFW Init
     glfwInit();
