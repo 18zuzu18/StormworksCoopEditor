@@ -15,9 +15,17 @@
 #include <glm/gtx/string_cast.hpp>
 
 struct Vertex {
-    glm::vec3 normal;
-    glm::vec4 color;
+    Vertex(glm::vec3 position, glm::vec4 color, glm::vec3 normal) {
+        this->position = position;
+        this->color = color;
+        this->normal = normal;
+    }
+
+    Vertex() {}
+
     glm::vec3 position;
+    glm::vec4 color;
+    glm::vec3 normal;
 };
 
 class MeshDecoder {
@@ -59,7 +67,7 @@ public:
             int vertexStart = endOfVertex - i * 28;
             glm::vec3 normal(decodeFloat(buffer, vertexStart), decodeFloat(buffer, vertexStart - 4), decodeFloat(buffer, vertexStart - 8));
             glm::vec3 position(decodeFloat(buffer, vertexStart - 16), decodeFloat(buffer, vertexStart - 20), decodeFloat(buffer, vertexStart - 24));
-            glm::vec4 color(buffer[vertexStart - 9], buffer[vertexStart - 10], buffer[vertexStart - 11], buffer[vertexStart - 12]);
+            glm::vec4 color(buffer[vertexStart - 12], buffer[vertexStart - 13], buffer[vertexStart - 14], buffer[vertexStart - 15]);
             color = color / 255.0f;
             (*vertices)[i].color = color;
             (*vertices)[i].position = position;

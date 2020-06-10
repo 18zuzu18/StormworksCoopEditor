@@ -9,6 +9,6 @@ include_directories(lib/glfw/include)
 include_directories(lib/glad/include)
 include_directories(lib/glm)
 
-add_executable(StromworksCoopEditor main.cpp lib/glad/src/glad.c mesh/MeshDecoder.h)
+add_executable(StromworksCoopEditor main.cpp lib/glad/src/glad.c mesh/MeshDecoder.h graphics/Shader.h)
 
 target_link_libraries(StromworksCoopEditor glfw)
