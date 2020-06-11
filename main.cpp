@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <chrono>
 #include "mesh/MeshDecoder.h"
 #include "graphics/Shader.h"
 
@@ -11,12 +12,19 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 void processInput(GLFWwindow *window);
 
+unsigned int windowWidth = 800;
+unsigned int windowHeight = 600;
+
+glm::vec3 orbitpoint(0.0f, 0.0f, 0.0f);
+glm::vec3 rotation(0.0f, 1.0f, 0.0f);
+float zoom = 5;
+
 int main() {
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
-    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/component_gate_capacitor.mesh", &vertices, &indices);
+    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/component_engine_diesel.mesh", &vertices, &indices);
 
     unsigned int vsize = vertices.size();
     for (int i = 0; i < indices.size(); ++i) {
@@ -37,7 +45,7 @@ int main() {
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     // GLFW Window Creation
-    GLFWwindow *window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(windowWidth, windowHeight, "LearnOpenGL", NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -52,7 +60,7 @@ int main() {
     }
 
     // Set Viewport and FramebufferSizeCallback
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, windowWidth, windowHeight);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     Shader shader("../graphics/shaders/vertex.glsl", "../graphics/shaders/fragment.glsl");
@@ -105,19 +113,28 @@ int main() {
 
 
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.0f));
-        model = glm::rotate(model, glm::radians((float) glfwGetTime() * 25), glm::vec3(1.0f, 1.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+//        model = glm::rotate(model, glm::radians((float) glfwGetTime() * 25), glm::vec3(1.0f, 1.0f, 0.0f));
 
         glm::mat4 view = glm::mat4(1.0f);
         // note that we're translating the scene in the reverse direction of where we want to move
 //        view = glm::translate(view, glm::vec3(cosf((float) glfwGetTime()), sinf((float) glfwGetTime()), -2.0f));
-//        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
+        const float radius = 10.0f;
+        float camX = sin(glfwGetTime()) * radius;
+        float camZ = cos(glfwGetTime()) * radius;
+
+        view = glm::translate(view, orbitpoint);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -zoom));
+//        view = glm::rotate(view, glm::radians(0.0f), rotation);
+
+        view = glm::rotate(view, glm::radians(sinf((float) glfwGetTime()) * 45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+//        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(45.0f), (float) windowWidth / (float) windowHeight, 0.1f, 100.0f);
 
         glm::mat4 trans = glm::mat4(1.0f);
-        trans = projection * model * view;
+        trans = projection * view * model;
         shader.setMat4("transform", trans);
 
         glBindVertexArray(VAO);
@@ -146,4 +163,6 @@ void processInput(GLFWwindow *window) {
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
+    windowWidth = width;
+    windowHeight = height;
 }
