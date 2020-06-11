@@ -6,6 +6,7 @@
 #include <iostream>
 #include "mesh/MeshDecoder.h"
 #include "graphics/Shader.h"
+#include "chrono"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
@@ -16,7 +17,7 @@ int main() {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
-    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/component_gate_capacitor.mesh", &vertices, &indices);
+    MeshDecoder::decodeMesh("E:/Steam/steamapps/common/Stormworks/rom/meshes/component_engine_diesel.mesh", &vertices, &indices);
 
     unsigned int vsize = vertices.size();
     for (int i = 0; i < indices.size(); ++i) {
@@ -37,14 +38,14 @@ int main() {
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     // GLFW Window Creation
-    GLFWwindow *window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(1280, 720, "Stormworks Model Viewer", NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
     glfwMakeContextCurrent(window);
-
+    glfwSwapInterval(0);
     // Load OpenGL with Glad
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD" << std::endl;
@@ -52,7 +53,7 @@ int main() {
     }
 
     // Set Viewport and FramebufferSizeCallback
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, 1280, 720);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     Shader shader("../graphics/shaders/vertex.glsl", "../graphics/shaders/fragment.glsl");
@@ -94,6 +95,8 @@ int main() {
 
     // Game Loop
     while (!glfwWindowShouldClose(window)) {
+        // frametime start
+        std::chrono::time_point start = std::chrono::high_resolution_clock::now();
         // input
         processInput(window);
 
@@ -105,7 +108,7 @@ int main() {
 
 
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
         model = glm::rotate(model, glm::radians((float) glfwGetTime() * 25), glm::vec3(1.0f, 1.0f, 0.0f));
 
         glm::mat4 view = glm::mat4(1.0f);
@@ -114,7 +117,7 @@ int main() {
 //        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
 
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 0.1f, 100.0f);
 
         glm::mat4 trans = glm::mat4(1.0f);
         trans = projection * model * view;
@@ -127,6 +130,11 @@ int main() {
         // check and call events and swap the buffers
         glfwPollEvents();
         glfwSwapBuffers(window);
+
+        // frametime stop
+        std::chrono::time_point stop = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+        std::cout <<  "Frametime: " << (float) duration.count() / 1000.0f << "ms" << std::endl;
     }
 
     // Cleanup
