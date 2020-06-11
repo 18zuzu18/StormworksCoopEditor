@@ -10,21 +10,23 @@
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
+void mouse_callback(GLFWwindow *window, double xpos, double ypos);
+
 void processInput(GLFWwindow *window);
 
 unsigned int windowWidth = 800;
 unsigned int windowHeight = 600;
 
 glm::vec3 orbitpoint(0.0f, 0.0f, 0.0f);
-glm::vec3 rotation(0.0f, 1.0f, 0.0f);
-float zoom = 5;
+glm::mat4 rotation;
+float zoom = 2;
 
 int main() {
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
-    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/component_engine_diesel.mesh", &vertices, &indices);
+    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/prop_microscope.mesh", &vertices, &indices);
 
     unsigned int vsize = vertices.size();
     for (int i = 0; i < indices.size(); ++i) {
@@ -62,6 +64,8 @@ int main() {
     // Set Viewport and FramebufferSizeCallback
     glViewport(0, 0, windowWidth, windowHeight);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(window, mouse_callback);
 
     Shader shader("../graphics/shaders/vertex.glsl", "../graphics/shaders/fragment.glsl");
     shader.use();
@@ -100,6 +104,8 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
+    rotation = glm::mat4(1.0f);
+
     // Game Loop
     while (!glfwWindowShouldClose(window)) {
         // input
@@ -127,7 +133,7 @@ int main() {
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -zoom));
 //        view = glm::rotate(view, glm::radians(0.0f), rotation);
 
-        view = glm::rotate(view, glm::radians(sinf((float) glfwGetTime()) * 45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        view += rotation;
 //        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
         glm::mat4 projection;
@@ -151,9 +157,42 @@ int main() {
     return 0;
 }
 
+float lastX = 400, lastY = 300;
+bool firstMouse = true;
+float sensitivity = 0.1f;
+bool rotating = false;
+
+void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
+    if (firstMouse) // initially set to true
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos;
+    lastX = xpos;
+    lastY = ypos;
+    if (rotating) {
+//        rotation.y += xoffset * sensitivity;
+//        rotation.x += yoffset * sensitivity;
+        rotation = glm::rotate(rotation, glm::radians(xoffset * sensitivity), glm::vec3(0.0f, 1.0f, 0.0f));
+        rotation = glm::rotate(rotation, glm::radians(yoffset * sensitivity), glm::vec3(1.0f, 0.0f, 0.0f));
+    }
+}
+
 void processInput(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (glfwGetMouseButton(window, 1)) {
+        rotating = true;
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    } else {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        rotating = false;
+        firstMouse = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
+    }
     if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     } else {
