@@ -18,7 +18,7 @@ unsigned int windowWidth = 800;
 unsigned int windowHeight = 600;
 
 glm::vec3 orbitpoint(0.0f, 0.0f, 0.0f);
-glm::vec3 rotation;
+glm::mat4 rotation;
 float zoom = 2;
 
 int main() {
@@ -30,11 +30,11 @@ int main() {
 
     unsigned int vsize = vertices.size();
     for (int i = 0; i < indices.size(); ++i) {
-//        std::cout << indices[i] << " ";
+        std::cout << indices[i] << " ";
         indices[i] = vsize - 1 - indices[i];
-//        std::cout << indices[i] << " ";
+        std::cout << indices[i] << " ";
         if ((i + 1) % 3 == 0) {
-//            std::cout << std::endl;
+            std::cout << std::endl;
         }
     }
 
@@ -104,7 +104,7 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
-    rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    rotation = glm::mat4(1.0f);
 
     // Game Loop
     while (!glfwWindowShouldClose(window)) {
@@ -129,19 +129,18 @@ int main() {
         float camX = sin(glfwGetTime()) * radius;
         float camZ = cos(glfwGetTime()) * radius;
 
-//        view = glm::translate(view, orbitpoint);
+        view = glm::translate(view, orbitpoint);
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -zoom));
-        view = glm::rotate(view, glm::radians(rotation.x), glm::vec3(-1.0f, 0.0f, 0.0f));
-        view = glm::rotate(view, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
 //        view = glm::rotate(view, glm::radians(0.0f), rotation);
 
+        view += rotation;
 //        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
         glm::mat4 projection;
         projection = glm::perspective(glm::radians(45.0f), (float) windowWidth / (float) windowHeight, 0.1f, 100.0f);
 
         glm::mat4 trans = glm::mat4(1.0f);
-        trans = projection * model * view;
+        trans = projection * view * model;
         shader.setMat4("transform", trans);
 
         glBindVertexArray(VAO);
@@ -175,10 +174,10 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
     lastX = xpos;
     lastY = ypos;
     if (rotating) {
-        rotation.y += xoffset * sensitivity;
-        rotation.x += yoffset * sensitivity;
-//        rotation = glm::rotate(rotation, glm::radians(yoffset * sensitivity), glm::vec3(1.0f, 0.0f, 0.0f));
-//        rotation = glm::rotate(rotation, glm::radians(xoffset * sensitivity), glm::vec3(0.0f, 1.0f, 0.0f));
+//        rotation.y += xoffset * sensitivity;
+//        rotation.x += yoffset * sensitivity;
+        rotation = glm::rotate(rotation, glm::radians(xoffset * sensitivity), glm::vec3(0.0f, 1.0f, 0.0f));
+        rotation = glm::rotate(rotation, glm::radians(yoffset * sensitivity), glm::vec3(1.0f, 0.0f, 0.0f));
     }
 }
 
