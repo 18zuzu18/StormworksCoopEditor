@@ -3,8 +3,10 @@
 //
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include <iostream>
 #include <chrono>
+
 #include "mesh/MeshDecoder.h"
 #include "graphics/Shader.h"
 
@@ -28,7 +30,7 @@ int main() {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
-    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/prop_microscope.mesh", &vertices, &indices);
+    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/cloud_05.mesh", &vertices, &indices);
 
     unsigned int vsize = vertices.size();
     for (int i = 0; i < indices.size(); ++i) {
@@ -171,6 +173,7 @@ float lastX = 400, lastY = 300;
 bool firstMouse = true;
 float sensitivity = 0.1f;
 bool rotating = false;
+bool moving = false;
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
     if (firstMouse) // initially set to true
@@ -193,6 +196,20 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
         }
 //        rotation = glm::rotate(rotation, glm::radians(yoffset * sensitivity), glm::vec3(1.0f, 0.0f, 0.0f));
 //        rotation = glm::rotate(rotation, glm::radians(xoffset * sensitivity), glm::vec3(0.0f, 1.0f, 0.0f));
+    } else if (moving) {
+        glm::vec3 direction;
+        direction.x = cos(glm::radians(rotation.y)) * cos(glm::radians(rotation.x));
+        direction.y = sin(glm::radians(rotation.x));
+        direction.z = sin(glm::radians(rotation.y)) * cos(glm::radians(rotation.x));
+        glm::vec3 cameraRight = glm::normalize(direction);
+        glm::vec3 cameraFront = glm::normalize(glm::cross(cameraRight, glm::vec3(0.0f, 1.0f, 0.0f)));
+        glm::vec3 cameraUp = -glm::normalize(glm::cross(cameraRight, cameraFront));
+        std::cout << glm::to_string(cameraUp) << std::endl;
+
+
+        float cameraSpeed = 2.5f / 60.0f / 50.0f;
+        orbitpoint -= cameraSpeed * cameraUp * yoffset;
+        orbitpoint -= cameraSpeed * cameraRight * xoffset;
     }
 }
 
@@ -215,7 +232,11 @@ void processInput(GLFWwindow *window) {
     } else {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         rotating = false;
-        firstMouse = true;
+    }
+    if (glfwGetMouseButton(window, 2)) {
+        moving = true;
+    } else {
+        moving = false;
     }
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
