@@ -12,6 +12,8 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 
+void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
+
 void processInput(GLFWwindow *window);
 
 unsigned int windowWidth = 800;
@@ -66,6 +68,7 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
 
     Shader shader("../graphics/shaders/vertex.glsl", "../graphics/shaders/fragment.glsl");
     shader.use();
@@ -130,9 +133,12 @@ int main() {
         float camZ = cos(glfwGetTime()) * radius;
 
 //        view = glm::translate(view, orbitpoint);
+        // TODO Camera Over Head and Under Bottom
+
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -zoom));
         view = glm::rotate(view, glm::radians(rotation.x), glm::vec3(-1.0f, 0.0f, 0.0f));
         view = glm::rotate(view, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+        view = glm::translate(view, -orbitpoint);
 //        view = glm::rotate(view, glm::radians(0.0f), rotation);
 
 //        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
@@ -177,9 +183,26 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
     if (rotating) {
         rotation.y += xoffset * sensitivity;
         rotation.x += yoffset * sensitivity;
+        if (rotation.x > 90.0f) {
+            rotation.x = 90.0f;
+        } else if (rotation.x < -90.0f) {
+            rotation.x = -90.0f;
+        }
 //        rotation = glm::rotate(rotation, glm::radians(yoffset * sensitivity), glm::vec3(1.0f, 0.0f, 0.0f));
 //        rotation = glm::rotate(rotation, glm::radians(xoffset * sensitivity), glm::vec3(0.0f, 1.0f, 0.0f));
     }
+}
+
+float scrollBase = 1.1f;
+float minZoom = 0.5f;
+float maxZoom = 100.0f;
+
+void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
+    zoom *= powf(scrollBase, -yoffset);
+    if (zoom < minZoom)
+        zoom = minZoom;
+    if (zoom > maxZoom)
+        zoom = maxZoom;
 }
 
 void processInput(GLFWwindow *window) {
