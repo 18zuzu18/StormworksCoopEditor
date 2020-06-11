@@ -48,6 +48,8 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
+    glfwWindowHint(GLFW_SAMPLES, 4);
+
     // GLFW Window Creation
     GLFWwindow *window = glfwCreateWindow(windowWidth, windowHeight, "LearnOpenGL", NULL, NULL);
     if (window == NULL) {
@@ -63,6 +65,7 @@ int main() {
         return -1;
     }
 
+    glEnable(GL_MULTISAMPLE);
     // Set Viewport and FramebufferSizeCallback
     glViewport(0, 0, windowWidth, windowHeight);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -133,7 +136,7 @@ int main() {
         float camZ = cos(glfwGetTime()) * radius;
 
 //        view = glm::translate(view, orbitpoint);
-        // TODO Camera Over Head and Under Bottom
+        // TODO Orbitpoint
 
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -zoom));
         view = glm::rotate(view, glm::radians(rotation.x), glm::vec3(-1.0f, 0.0f, 0.0f));
