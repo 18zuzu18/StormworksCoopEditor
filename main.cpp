@@ -30,7 +30,7 @@ int main() {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
-    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/cloud_05.mesh", &vertices, &indices);
+    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/component_engine_diesel.mesh", &vertices, &indices);
 
     unsigned int vsize = vertices.size();
     for (int i = 0; i < indices.size(); ++i) {
@@ -71,7 +71,7 @@ int main() {
     // Set Viewport and FramebufferSizeCallback
     glViewport(0, 0, windowWidth, windowHeight);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
@@ -197,13 +197,20 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
 //        rotation = glm::rotate(rotation, glm::radians(yoffset * sensitivity), glm::vec3(1.0f, 0.0f, 0.0f));
 //        rotation = glm::rotate(rotation, glm::radians(xoffset * sensitivity), glm::vec3(0.0f, 1.0f, 0.0f));
     } else if (moving) {
+//        glm::vec3 direction;
+//        direction.x = cos(glm::radians(rotation.x)) * cos(glm::radians(rotation.y));
+//        direction.y = sin(glm::radians(rotation.y));
+//        direction.z = sin(glm::radians(rotation.x)) * cos(glm::radians(rotation.y));
         glm::vec3 direction;
-        direction.x = cos(glm::radians(rotation.y)) * cos(glm::radians(rotation.x));
-        direction.y = sin(glm::radians(rotation.x));
-        direction.z = sin(glm::radians(rotation.y)) * cos(glm::radians(rotation.x));
+        direction.x = cos(glm::radians(rotation.y)); // Note that we convert the angle to radians first
+        direction.z = sin(glm::radians(rotation.y));
+        glm::vec3 ydirection;
+        ydirection.x = sin(glm::radians(-rotation.x)) * direction.z; // Note that we convert the angle to radians first
+        ydirection.y = cos(glm::radians(rotation.x));
+        ydirection.z = sin(glm::radians(rotation.x)) * direction.x;
         glm::vec3 cameraRight = glm::normalize(direction);
-        glm::vec3 cameraFront = glm::normalize(glm::cross(cameraRight, glm::vec3(0.0f, 1.0f, 0.0f)));
-        glm::vec3 cameraUp = -glm::normalize(glm::cross(cameraRight, cameraFront));
+//        glm::vec3 cameraFront = glm::normalize(glm::cross(cameraRight, glm::vec3(0.0f, 1.0f, 0.0f)));
+        glm::vec3 cameraUp = glm::normalize(ydirection);
         std::cout << glm::to_string(cameraUp) << std::endl;
 
 
@@ -228,9 +235,9 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 void processInput(GLFWwindow *window) {
     if (glfwGetMouseButton(window, 1)) {
         rotating = true;
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     } else {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+//        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         rotating = false;
     }
     if (glfwGetMouseButton(window, 2)) {
