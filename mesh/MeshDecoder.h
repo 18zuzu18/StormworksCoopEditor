@@ -72,6 +72,9 @@ public:
             (*vertices)[i].color = color;
             (*vertices)[i].position = position;
             (*vertices)[i].normal = normal;
+            if ((i % 1000) == 0) {
+                std::cout << (float) i / (float) numVertex * 100.0f << "%" << std::endl;
+            }
         }
 
         // Index

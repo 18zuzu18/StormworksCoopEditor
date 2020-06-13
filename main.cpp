@@ -30,7 +30,7 @@ int main() {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
-    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/component_engine_diesel.mesh", &vertices, &indices);
+    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/island_41_underwater_mining.mesh", &vertices, &indices);
 
     unsigned int vsize = vertices.size();
     for (int i = 0; i < indices.size(); ++i) {
@@ -149,7 +149,7 @@ int main() {
 //        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(45.0f), (float) windowWidth / (float) windowHeight, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(45.0f), (float) windowWidth / (float) windowHeight, 0.1f, 1000.0f);
 
         glm::mat4 trans = glm::mat4(1.0f);
         trans = projection * model * view;
@@ -211,10 +211,10 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
         glm::vec3 cameraRight = glm::normalize(direction);
 //        glm::vec3 cameraFront = glm::normalize(glm::cross(cameraRight, glm::vec3(0.0f, 1.0f, 0.0f)));
         glm::vec3 cameraUp = glm::normalize(ydirection);
-        std::cout << glm::to_string(cameraUp) << std::endl;
+//        std::cout << glm::to_string(cameraUp) << std::endl;
 
 
-        float cameraSpeed = 2.5f / 60.0f / 50.0f;
+        float cameraSpeed = 2.5f / 60.0f / 100.0f * zoom;
         orbitpoint -= cameraSpeed * cameraUp * yoffset;
         orbitpoint -= cameraSpeed * cameraRight * xoffset;
     }
@@ -222,7 +222,7 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
 
 float scrollBase = 1.1f;
 float minZoom = 0.5f;
-float maxZoom = 100.0f;
+float maxZoom = 250.0f;
 
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
     zoom *= powf(scrollBase, -yoffset);
