@@ -214,7 +214,7 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
 //        std::cout << glm::to_string(cameraUp) << std::endl;
 
 
-        float cameraSpeed = 2.5f / 60.0f / 100.0f * zoom;
+        float cameraSpeed = 2.5f / 60.0f / 50.0f * zoom / ((float) windowWidth / 1920.0f);
         orbitpoint -= cameraSpeed * cameraUp * yoffset;
         orbitpoint -= cameraSpeed * cameraRight * xoffset;
     }
