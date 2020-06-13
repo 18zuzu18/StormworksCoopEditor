@@ -33,7 +33,7 @@ private:
     static float decodeFloat(std::vector<unsigned char> buffer, unsigned int pos) {
         float f;
         unsigned char b[] = {buffer[pos - 3], buffer[pos - 2], buffer[pos - 1], buffer[pos - 0]};
-        memcpy(&f, &b, sizeof(f));
+        std::memcpy(&f, &b, sizeof(f));
         return f;
     }
 
@@ -63,19 +63,21 @@ public:
 
         (*vertices).resize(numVertex);
 
+        auto start = std::chrono::steady_clock::now();
+
         for (int i = 0; i < numVertex; ++i) {
             int vertexStart = endOfVertex - i * 28;
-            glm::vec3 normal(decodeFloat(buffer, vertexStart), decodeFloat(buffer, vertexStart - 4), decodeFloat(buffer, vertexStart - 8));
-            glm::vec3 position(decodeFloat(buffer, vertexStart - 16), decodeFloat(buffer, vertexStart - 20), decodeFloat(buffer, vertexStart - 24));
-            glm::vec4 color(buffer[vertexStart - 15], buffer[vertexStart - 14], buffer[vertexStart - 13], buffer[vertexStart - 12]);
-            color = color / 255.0f;
-            (*vertices)[i].color = color;
-            (*vertices)[i].position = position;
-            (*vertices)[i].normal = normal;
+            (*vertices)[i].color = glm::vec4(buffer[vertexStart - 15] / 255.0f, buffer[vertexStart - 14] / 255.0f, buffer[vertexStart - 13] / 255.0f, buffer[vertexStart - 12] / 255.0f);
+            (*vertices)[i].position = glm::vec3(decodeFloat(buffer, vertexStart - 16), decodeFloat(buffer, vertexStart - 20), decodeFloat(buffer, vertexStart - 24));;
+            (*vertices)[i].normal = glm::vec3(decodeFloat(buffer, vertexStart), decodeFloat(buffer, vertexStart - 4), decodeFloat(buffer, vertexStart - 8));
             if ((i % 1000) == 0) {
                 std::cout << (float) i / (float) numVertex * 100.0f << "%" << std::endl;
             }
         }
+
+        auto end = std::chrono::steady_clock::now();
+        std::chrono::duration<double> diff = end - start;
+        std::cout << "Loaded Vertices in: " << diff.count() << " s\n\n";
 
         // Index
         unsigned int a = int((unsigned char) (buffer[numVertex * 28 + 16]) << 16 |
