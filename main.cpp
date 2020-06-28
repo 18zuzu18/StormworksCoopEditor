@@ -4,11 +4,16 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "rapidxml_utils.hpp"
+
 #include <iostream>
 #include <chrono>
 
 #include "mesh/MeshDecoder.h"
 #include "graphics/Shader.h"
+#include "graphics/Mesh.h"
+#include "logic/Component.h"
+#include "logic/ComponentManager.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
@@ -27,20 +32,7 @@ float zoom = 2;
 
 int main() {
 
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
 
-    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/meshes/island_41_underwater_mining.mesh", &vertices, &indices);
-
-    unsigned int vsize = vertices.size();
-    for (int i = 0; i < indices.size(); ++i) {
-//        std::cout << indices[i] << " ";
-        indices[i] = vsize - 1 - indices[i];
-//        std::cout << indices[i] << " ";
-        if ((i + 1) % 3 == 0) {
-//            std::cout << std::endl;
-        }
-    }
 
     std::cout << "Hello Stormworkers" << std::endl;
     // GLFW Init
@@ -78,37 +70,27 @@ int main() {
     Shader shader("../graphics/shaders/vertex.glsl", "../graphics/shaders/fragment.glsl");
     shader.use();
 
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
+//    std::vector<Vertex> vertices;
+//    std::vector<unsigned int> indices;
+//
+//    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/" + wedge.meshDataName, &vertices, &indices);
+//
+//    Mesh mesh;
+//    mesh.load(vertices, indices);
+//
+//    std::vector<Vertex> vertices2;
+//    std::vector<unsigned int> indices2;
+//
+//    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/" + wedge.mesh0Name, &vertices2, &indices2);
+//
+//    Mesh mesh2;
+//    mesh2.load(vertices2, indices2);
 
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
+    ComponentManager cm;
+    cm.loadComponents();
 
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-
-    // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
-    // 1. bind Vertex Array Object
-    glBindVertexArray(VAO);
-    // 2. copy our vertices array in a buffer for OpenGL to use
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 10 * vertices.size(), vertices.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), indices.data(), GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void *) 0);
-    glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void *) (3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // normal attribute
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void *) (7 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    Component wedge("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/data/definitions/inventory_outfit_parachute.xml");
+    std::cout << wedge.meshDataName << std::endl;
 
     glEnable(GL_DEPTH_TEST);
 
@@ -149,15 +131,25 @@ int main() {
 //        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(45.0f), (float) windowWidth / (float) windowHeight, 0.1f, 1000.0f);
+        projection = glm::perspective(glm::radians(70.0f), (float) windowWidth / (float) windowHeight, 0.1f, 1000.0f);
 
         glm::mat4 trans = glm::mat4(1.0f);
-        trans = projection * model * view;
+        trans = projection * view * model;
         shader.setMat4("transform", trans);
 
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+        wedge.mesh.draw();
+
+        model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+        trans = projection * view * model;
+        shader.setMat4("transform", trans);
+        for (int i = 0; i < cm.components.size(); ++i) {
+            if (cm.components[i].mesh.loaded) {
+                cm.components[i].mesh.draw();
+            }
+            model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+            trans = projection * view * model;
+            shader.setMat4("transform", trans);
+        }
 
         // check and call events and swap the buffers
         glfwPollEvents();

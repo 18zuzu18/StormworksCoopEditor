@@ -70,6 +70,9 @@ public:
             (*vertices)[i].color = glm::vec4(buffer[vertexStart - 15] / 255.0f, buffer[vertexStart - 14] / 255.0f, buffer[vertexStart - 13] / 255.0f, buffer[vertexStart - 12] / 255.0f);
             (*vertices)[i].position = glm::vec3(decodeFloat(buffer, vertexStart - 16), decodeFloat(buffer, vertexStart - 20), decodeFloat(buffer, vertexStart - 24));;
             (*vertices)[i].normal = glm::vec3(decodeFloat(buffer, vertexStart), decodeFloat(buffer, vertexStart - 4), decodeFloat(buffer, vertexStart - 8));
+            if ((*vertices)[i].color * 255.0f == glm::vec4(109.000000, 160.000000, 199.000000, 255.000000)) {
+                (*vertices)[i].color.a = 0.0f;
+            }
             if ((i % 1000) == 0) {
                 std::cout << (float) i / (float) numVertex * 100.0f << "%" << std::endl;
             }
@@ -101,6 +104,15 @@ public:
                 std::cout << "HELP" << std::endl;
             }
             (*indices)[j] = index;
+        }
+        unsigned int vsize = (*vertices).size();
+        for (int i = 0; i < (*indices).size(); ++i) {
+//        std::cout << indices[i] << " ";
+            (*indices)[i] = vsize - 1 - (*indices)[i];
+//        std::cout << indices[i] << " ";
+            if ((i + 1) % 3 == 0) {
+//            std::cout << std::endl;
+            }
         }
     }
 
