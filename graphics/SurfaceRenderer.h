@@ -30,9 +30,9 @@ class SurfaceRenderer {
     };
     std::vector<float> rotations = {
             0.0f,
-            90.0f,
-            0.0f,
-            270.0f
+            -90.0f,
+            180.0f,
+            90.0f
     };
 
     std::vector<std::vector<Vertex>> vertices = {
@@ -46,7 +46,7 @@ class SurfaceRenderer {
             {
                     Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
             }
     };
     std::vector<std::vector<unsigned int>> indices = {
