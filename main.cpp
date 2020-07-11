@@ -14,6 +14,7 @@
 #include "graphics/Mesh.h"
 #include "logic/Component.h"
 #include "logic/ComponentManager.h"
+#include "graphics/SurfaceRenderer.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
@@ -29,6 +30,9 @@ unsigned int windowHeight = 600;
 glm::vec3 orbitpoint(0.0f, 0.0f, 0.0f);
 glm::vec3 rotation;
 float zoom = 2;
+
+const bool drawMesh = true;
+const bool drawSurface = true;
 
 int main() {
 
@@ -89,8 +93,8 @@ int main() {
     ComponentManager cm;
     cm.loadComponents();
 
-    Component wedge("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/data/definitions/inventory_outfit_parachute.xml");
-    std::cout << wedge.meshDataName << std::endl;
+    SurfaceRenderer sr;
+
 
     glEnable(GL_DEPTH_TEST);
 
@@ -120,7 +124,6 @@ int main() {
         float camZ = cos(glfwGetTime()) * radius;
 
 //        view = glm::translate(view, orbitpoint);
-        // TODO Orbitpoint
 
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -zoom));
         view = glm::rotate(view, glm::radians(rotation.x), glm::vec3(-1.0f, 0.0f, 0.0f));
@@ -137,17 +140,21 @@ int main() {
         trans = projection * view * model;
         shader.setMat4("transform", trans);
 
-        wedge.mesh.draw();
 
         model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
         trans = projection * view * model;
         shader.setMat4("transform", trans);
         for (int i = 0; i < cm.components.size(); ++i) {
-            if (cm.components[i].mesh.loaded) {
+            if (cm.components[i].mesh.loaded && drawMesh) {
+                shader.use();
                 cm.components[i].mesh.draw();
+            }
+            if (drawSurface){
+                sr.renderSurfaces(cm.components[i].surfaces, trans);
             }
             model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
             trans = projection * view * model;
+            shader.use();
             shader.setMat4("transform", trans);
         }
 

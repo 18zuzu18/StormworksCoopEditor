@@ -72,7 +72,7 @@ public:
 
     Mesh mesh;
 
-    Component(std::string path) {
+    explicit Component(std::string path) {
         rapidxml::file<> xmlFile(path.c_str()); // Default template is char
         rapidxml::xml_document<> doc;
         doc.parse<0>(xmlFile.data());
@@ -223,7 +223,7 @@ public:
             std::vector<Vertex> vertices;
             std::vector<unsigned int> indices;
 
-            MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/" + this->meshDataName, &vertices, &indices);
+            MeshDecoder::decodeMesh("C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->meshDataName, &vertices, &indices);
             mesh.load(vertices, indices);
         }
     }

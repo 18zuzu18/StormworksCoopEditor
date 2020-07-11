@@ -10,6 +10,6 @@ include_directories(lib/glad/include)
 include_directories(lib/glm)
 include_directories(lib/rapidxml)
 
-add_executable(StromworksCoopEditor main.cpp lib/glad/src/glad.c mesh/MeshDecoder.h graphics/Shader.h graphics/Mesh.h logic/ComponentManager.h logic/Component.h)
+add_executable(StromworksCoopEditor main.cpp lib/glad/src/glad.c mesh/MeshDecoder.h graphics/Shader.h graphics/Mesh.h logic/ComponentManager.h logic/Component.h graphics/SurfaceRenderer.h)
 
 target_link_libraries(StromworksCoopEditor glfw)

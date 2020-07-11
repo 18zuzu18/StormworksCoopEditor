@@ -14,6 +14,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 
+//#define MESH_DECODE_DEBUG_OUTPUT
+
 struct Vertex {
     Vertex(glm::vec3 position, glm::vec4 color, glm::vec3 normal) {
         this->position = position;
@@ -49,22 +51,25 @@ public:
 
         // Num Vertex
         unsigned int numVertex = buffer[0x08] | buffer[0x09] << 8;
+#ifdef MESH_DECODE_DEBUG_OUTPUT
         std::cout << "Num Vertex: ";
         std::cout << numVertex << std::endl;
-
+#endif
         // End of Vertex
         unsigned int endOfVertex = 13 + numVertex * 28;
+#ifdef MESH_DECODE_DEBUG_OUTPUT
         std::cout << "End of Vertex: 0x";
         printf("%08x", endOfVertex);
         std::cout << std::endl;
         std::cout << "Start of Vertex: 0x";
         printf("%08x", 0x0E);
         std::cout << std::endl << std::endl;
+#endif
 
         (*vertices).resize(numVertex);
-
+#ifdef MESH_DECODE_DEBUG_OUTPUT
         auto start = std::chrono::steady_clock::now();
-
+#endif
         for (int i = 0; i < numVertex; ++i) {
             int vertexStart = endOfVertex - i * 28;
             (*vertices)[i].color = glm::vec4(buffer[vertexStart - 15] / 255.0f, buffer[vertexStart - 14] / 255.0f, buffer[vertexStart - 13] / 255.0f, buffer[vertexStart - 12] / 255.0f);
@@ -73,28 +78,32 @@ public:
             if ((*vertices)[i].color * 255.0f == glm::vec4(109.000000, 160.000000, 199.000000, 255.000000)) {
                 (*vertices)[i].color.a = 0.0f;
             }
+#ifdef MESH_DECODE_DEBUG_OUTPUT
             if ((i % 1000) == 0) {
                 std::cout << (float) i / (float) numVertex * 100.0f << "%" << std::endl;
             }
+#endif
         }
-
+#ifdef MESH_DECODE_DEBUG_OUTPUT
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double> diff = end - start;
         std::cout << "Loaded Vertices in: " << diff.count() << " s\n\n";
-
+#endif
         // Index
         unsigned int a = int((unsigned char) (buffer[numVertex * 28 + 16]) << 16 |
                              (unsigned char) (buffer[numVertex * 28 + 15]) << 8 |
                              (unsigned char) (buffer[numVertex * 28 + 14]));
         unsigned int numIndex = a;
+#ifdef MESH_DECODE_DEBUG_OUTPUT
         std::cout << "Num Index: ";
         std::cout << numIndex << std::endl;
-
+#endif
         unsigned int startIndex = numVertex * 28 + 18;
+#ifdef MESH_DECODE_DEBUG_OUTPUT
         std::cout << "Start Index: 0x";
         printf("%08x", startIndex);
         std::cout << std::endl << std::endl;
-
+#endif
         (*indices).resize(numIndex);
 
         for (int j = 0; j < numIndex; ++j) {

@@ -17,18 +17,19 @@ public:
 
     void loadComponents() {
         auto start = std::chrono::steady_clock::now();
-        for (const auto &entry : std::filesystem::directory_iterator("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/data/definitions/")) {
-            Component component(entry.path());
-//            for (int i = 0; i < component.logicNodes.size(); ++i) {
-//                std::cout << component.logicNodes[i].label << std::endl;
-//            }
-//            std::cout << entry.path() << std::endl;
-            std::cout << component.name << std::endl;
+        std::cout << "Loading Components" << std::endl;
+        int i = 0;
+        for (const auto &entry : std::filesystem::directory_iterator("C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/data/definitions/")) {
+            Component component(entry.path().string());
+            ++i;
+            if(i%50 == 0){
+                std::cout << ".";
+            }
             components.emplace_back(component);
         }
         auto end = std::chrono::steady_clock::now();
         std::chrono::duration<double> diff = end - start;
-        std::cout << "Loaded Components in: " << diff.count() << " s\n\n";
+        std::cout << "\nLoaded Components in: " << diff.count() << " s\n\n";
     }
 };
 
