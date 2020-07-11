@@ -23,6 +23,10 @@ struct Vertex {
         this->normal = normal;
     }
 
+    std::string toString(){
+        return "Pos: " + glm::to_string(position) + "; Color: " + glm::to_string(color) + "; Normal: " + glm::to_string(normal);
+    }
+
     Vertex() {}
 
     glm::vec3 position;

@@ -74,10 +74,14 @@ int main() {
     Shader shader("../graphics/shaders/vertex.glsl", "../graphics/shaders/fragment.glsl");
     shader.use();
 
-//    std::vector<Vertex> vertices;
-//    std::vector<unsigned int> indices;
-//
-//    MeshDecoder::decodeMesh("/home/jens/.steam/steam/steamapps/common/Stormworks/rom/" + wedge.meshDataName, &vertices, &indices);
+    /*std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+
+    MeshDecoder::decodeMesh("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Stormworks\\rom\\meshes\\component_transmission_block_multiway.mesh", &vertices, &indices);
+
+    for (int j = 0; j < vertices.size(); ++j) {
+        std::cout << vertices[j].toString() << std::endl;
+    }*/
 //
 //    Mesh mesh;
 //    mesh.load(vertices, indices);
@@ -148,6 +152,14 @@ int main() {
             if (cm.components[i].mesh.loaded && drawMesh) {
                 shader.use();
                 cm.components[i].mesh.draw();
+            }
+            if (cm.components[i].mesh0.loaded && drawMesh) {
+                shader.use();
+                cm.components[i].mesh0.draw();
+            }
+            if (cm.components[i].mesh1.loaded && drawMesh) {
+                shader.use();
+                cm.components[i].mesh1.draw();
             }
             if (drawSurface){
                 sr.renderSurfaces(cm.components[i].surfaces, trans);

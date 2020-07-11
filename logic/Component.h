@@ -9,6 +9,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <rapidxml.hpp>
+#include <filesystem>
 
 #define LOGIC_BOOL 0
 #define LOGIC_NUM 1
@@ -54,7 +55,8 @@ private:
     }
 
     void readFloat(std::string name, float *out) {
-        *out = definition->first_attribute(name.c_str()) ? atof(definition->first_attribute(name.c_str())->value()) : 0.0f;
+        *out = definition->first_attribute(name.c_str()) ? atof(definition->first_attribute(name.c_str())->value())
+                                                         : 0.0f;
     }
 
     void readBool(std::string name, bool *out) {
@@ -71,6 +73,8 @@ private:
 public:
 
     Mesh mesh;
+    Mesh mesh0;
+    Mesh mesh1;
 
     explicit Component(std::string path) {
         rapidxml::file<> xmlFile(path.c_str()); // Default template is char
@@ -194,9 +198,15 @@ public:
             v.position.z = atof(pos->first_attribute("z")->value());
             rapidxml::xml_node<> *phr = child->first_node("physics_shape_rotation");
             if (phr) {
-                v.physicsShapeRotation = glm::mat3(atof(phr->first_attribute("00")->value()), atof(phr->first_attribute("01")->value()), atof(phr->first_attribute("02")->value()),
-                                                   atof(phr->first_attribute("10")->value()), atof(phr->first_attribute("11")->value()), atof(phr->first_attribute("12")->value()),
-                                                   atof(phr->first_attribute("20")->value()), atof(phr->first_attribute("21")->value()), atof(phr->first_attribute("22")->value()));
+                v.physicsShapeRotation = glm::mat3(atof(phr->first_attribute("00")->value()),
+                                                   atof(phr->first_attribute("01")->value()),
+                                                   atof(phr->first_attribute("02")->value()),
+                                                   atof(phr->first_attribute("10")->value()),
+                                                   atof(phr->first_attribute("11")->value()),
+                                                   atof(phr->first_attribute("12")->value()),
+                                                   atof(phr->first_attribute("20")->value()),
+                                                   atof(phr->first_attribute("21")->value()),
+                                                   atof(phr->first_attribute("22")->value()));
             }
             voxels.emplace_back(v);
             ++tmp;
@@ -206,7 +216,8 @@ public:
         for (rapidxml::xml_node<> *child = logicnodes->first_node(); child; child = child->next_sibling()) {
             LogicNode ln;
             ln.label = child->first_attribute("label") ? child->first_attribute("label")->value() : "";
-            ln.description = child->first_attribute("description") ? child->first_attribute("description")->value() : "";
+            ln.description = child->first_attribute("description") ? child->first_attribute("description")->value()
+                                                                   : "";
             ln.mode = child->first_attribute("mode") ? atoi(child->first_attribute("mode")->value()) : 0;
             ln.type = child->first_attribute("type") ? atoi(child->first_attribute("type")->value()) : 0;
             ln.flags = child->first_attribute("flags") ? atoi(child->first_attribute("flags")->value()) : 0;
@@ -220,11 +231,41 @@ public:
         if (!meshDataName.empty()) {
             if (meshDataName == "meshes/component_robotic_pivot_b_no_trans.mesh")
                 meshDataName = "meshes/assets_meshes_component_robotic_pivot_b_no_trans.mesh";
-            std::vector<Vertex> vertices;
-            std::vector<unsigned int> indices;
+            if (std::filesystem::exists("C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->meshDataName)) {
+                std::vector<Vertex> vertices;
+                std::vector<unsigned int> indices;
 
-            MeshDecoder::decodeMesh("C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->meshDataName, &vertices, &indices);
-            mesh.load(vertices, indices);
+                MeshDecoder::decodeMesh(
+                        "C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->meshDataName, &vertices,
+                        &indices);
+                mesh.load(vertices, indices);
+            }
+        }
+        if (!mesh0Name.empty()) {
+            if (mesh0Name == "meshes/component_robotic_pivot_b_no_trans.mesh")
+                mesh0Name = "meshes/assets_meshes_component_robotic_pivot_b_no_trans.mesh";
+            if (std::filesystem::exists("C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->mesh0Name)) {
+                std::vector<Vertex> vertices;
+                std::vector<unsigned int> indices;
+
+                MeshDecoder::decodeMesh(
+                        "C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->mesh0Name, &vertices,
+                        &indices);
+                mesh0.load(vertices, indices);
+            }
+        }
+        if (!mesh1Name.empty()) {
+            if (mesh1Name == "meshes/component_robotic_pivot_b_no_trans.mesh")
+                mesh1Name = "meshes/assets_meshes_component_robotic_pivot_b_no_trans.mesh";
+            if (std::filesystem::exists("C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->mesh1Name)) {
+                std::vector<Vertex> vertices;
+                std::vector<unsigned int> indices;
+
+                MeshDecoder::decodeMesh(
+                        "C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->mesh1Name, &vertices,
+                        &indices);
+                mesh1.load(vertices, indices);
+            }
         }
     }
 
