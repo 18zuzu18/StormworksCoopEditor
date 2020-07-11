@@ -47,6 +47,25 @@ class SurfaceRenderer {
                     Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
+            },
+            {},
+            {},
+            {},
+            {
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, -0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, 0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+            },
+            {
+                    Vertex(glm::vec3(0.125f, -0.125f, -0.125f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, -0.125f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
+            },
+            {
+                    Vertex(glm::vec3(0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, 0.125f, -0.125f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
             }
     };
     std::vector<std::vector<unsigned int>> indices = {
@@ -54,6 +73,19 @@ class SurfaceRenderer {
             {
                     0, 1, 2,
                     1, 2, 3
+            },
+            {
+                    0, 1, 2
+            },
+            {},
+            {},
+            {},
+            {
+                    0, 1, 2,
+                    1, 2, 3
+            },
+            {
+                    0, 1, 2
             },
             {
                     0, 1, 2
@@ -76,12 +108,15 @@ public:
     void renderSurface(Surface *surface, glm::mat4 transform) {
         glm::mat4 rotation(1.0f);
         float t = (float) glfwGetTime() * 30.0f;
+        // Position
+        glm::vec3 npos(surface->position.z, surface->position.y, surface->position.x);
+        rotation = glm::translate(rotation, npos/4.0f);
         // Orientate
         rotation = glm::rotate(rotation, glm::radians(orientations[surface->orientation].x),
                                glm::vec3(1.0f, 0.0f, 0.0f));
         rotation = glm::rotate(rotation, glm::radians(orientations[surface->orientation].y),
                                glm::vec3(0.0f, 1.0f, 0.0f));
-        // TODO Rotate
+        // Rotate
         rotation = glm::rotate(rotation, glm::radians(rotations[surface->rotation]), glm::vec3(0.0f, 0.0f, 1.0f));
         // Shape
         if (surface->shape < meshes.size()) {
