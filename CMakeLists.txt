@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(StromworksCoopEditor)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc")
 
 add_subdirectory(lib/glfw)
 add_subdirectory(lib/glm)
