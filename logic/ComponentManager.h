@@ -19,7 +19,7 @@ public:
         auto start = std::chrono::steady_clock::now();
         std::cout << "Loading Components" << std::endl;
         int i = 0;
-        for (const auto &entry : std::filesystem::directory_iterator("C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/data/definitions/")) {
+        for (const auto &entry : std::filesystem::directory_iterator(gamepath + "data/definitions/")) {
             Component component(entry.path().string());
             ++i;
             if(i%50 == 0){

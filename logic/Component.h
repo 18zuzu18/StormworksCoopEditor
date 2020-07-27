@@ -11,6 +11,8 @@
 #include <rapidxml.hpp>
 #include <filesystem>
 
+static std::string gamepath = "D:/SteamLibrary/steamapps/common/Stormworks/rom/";
+
 #define LOGIC_BOOL 0
 #define LOGIC_NUM 1
 #define LOGIC_ELE 4
@@ -231,12 +233,12 @@ public:
         if (!meshDataName.empty()) {
             if (meshDataName == "meshes/component_robotic_pivot_b_no_trans.mesh")
                 meshDataName = "meshes/assets_meshes_component_robotic_pivot_b_no_trans.mesh";
-            if (std::filesystem::exists("C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->meshDataName)) {
+            if (std::filesystem::exists(gamepath + this->meshDataName)) {
                 std::vector<Vertex> vertices;
                 std::vector<unsigned int> indices;
 
                 MeshDecoder::decodeMesh(
-                        "C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->meshDataName, &vertices,
+                        gamepath + this->meshDataName, &vertices,
                         &indices);
                 mesh.load(vertices, indices);
             }
@@ -244,12 +246,12 @@ public:
         if (!mesh0Name.empty()) {
             if (mesh0Name == "meshes/component_robotic_pivot_b_no_trans.mesh")
                 mesh0Name = "meshes/assets_meshes_component_robotic_pivot_b_no_trans.mesh";
-            if (std::filesystem::exists("C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->mesh0Name)) {
+            if (std::filesystem::exists(gamepath + this->mesh0Name)) {
                 std::vector<Vertex> vertices;
                 std::vector<unsigned int> indices;
 
                 MeshDecoder::decodeMesh(
-                        "C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->mesh0Name, &vertices,
+                        gamepath + this->mesh0Name, &vertices,
                         &indices);
                 mesh0.load(vertices, indices);
             }
@@ -257,12 +259,12 @@ public:
         if (!mesh1Name.empty()) {
             if (mesh1Name == "meshes/component_robotic_pivot_b_no_trans.mesh")
                 mesh1Name = "meshes/assets_meshes_component_robotic_pivot_b_no_trans.mesh";
-            if (std::filesystem::exists("C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->mesh1Name)) {
+            if (std::filesystem::exists(gamepath + this->mesh1Name)) {
                 std::vector<Vertex> vertices;
                 std::vector<unsigned int> indices;
 
                 MeshDecoder::decodeMesh(
-                        "C:/Program Files (x86)/Steam/steamapps/common/Stormworks/rom/" + this->mesh1Name, &vertices,
+                        gamepath + this->mesh1Name, &vertices,
                         &indices);
                 mesh1.load(vertices, indices);
             }
