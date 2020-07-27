@@ -97,6 +97,9 @@ int main() {
     ComponentManager cm;
     cm.loadComponents();
 
+    std::cout << cm.components.size() << std::endl;
+    int ylength = (int) sqrt(cm.components.size());
+
     SurfaceRenderer sr;
 
 
@@ -144,11 +147,12 @@ int main() {
         trans = projection * view * model;
         shader.setMat4("transform", trans);
 
-
-        model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-        trans = projection * view * model;
-        shader.setMat4("transform", trans);
         for (int i = 0; i < cm.components.size(); ++i) {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, glm::vec3(((i%ylength)-(int)(ylength/2))*2, (int)((int)(i/ylength)-ylength/2)*2, 0.0f));
+            trans = projection * view * model;
+            shader.use();
+            shader.setMat4("transform", trans);
             if (cm.components[i].mesh.loaded && drawMesh) {
                 shader.use();
                 cm.components[i].mesh.draw();
@@ -164,10 +168,6 @@ int main() {
             if (drawSurface){
                 sr.renderSurfaces(cm.components[i].surfaces, trans);
             }
-            model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-            trans = projection * view * model;
-            shader.use();
-            shader.setMat4("transform", trans);
         }
 
         // check and call events and swap the buffers

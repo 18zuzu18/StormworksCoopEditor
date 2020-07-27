@@ -36,19 +36,19 @@ class SurfaceRenderer {
     };
 
     std::vector<std::vector<Vertex>> vertices = {
-            {},
-            {
+            {}, // 0
+            {   // 1
                     Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
             },
-            {
+            {   // 2
                     Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
             },
-            {
+            {   // 3
 #define large 0.0625f
 #define small 0.025888f
                     Vertex(glm::vec3(0.0f, 0.0f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
@@ -63,36 +63,80 @@ class SurfaceRenderer {
 #undef large
 #undef small
             },
-            {},
-            {},
-            {
+            {}, // 4
+            {}, // 5
+            {   // 6
                     Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(0.125f, -0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(0.125f, 0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
             },
-            {
+            {   // 7
                     Vertex(glm::vec3(0.125f, -0.125f, -0.125f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(-0.125f, 0.125f, -0.125f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
             },
-            {
+            {   // 8
                     Vertex(glm::vec3(0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(0.125f, 0.125f, -0.125f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
                     Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
+            },
+            {   // 9
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+            },
+            {   // 10
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+            },
+            {   // 11
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+            },
+            {   // 12
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+            },
+            {}, // 13
+            {}, // 14
+            {}, // 15
+            {}, // 16
+            {}, // 17
+            {}, // 18
+            {}, // 19
+            {}, // 20
+            {   // 21
+                    Vertex(glm::vec3(0.0f, 0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, 0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, -0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, -0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+            },
+            {   // 22
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, 0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, -0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
             }
+
+
     };
     // grid_square_voxel.mesh
     std::vector<std::vector<unsigned int>> indices = {
-            {},
-            {
+            {}, // 0
+            {   // 1
                     0, 1, 2,
                     1, 2, 3
             },
-            {
+            {   // 2
                     0, 1, 2
             },
-            {
+            {   // 3
                     0, 1, 2,
                     0, 3, 4,
                     0, 5, 6,
@@ -102,18 +146,49 @@ class SurfaceRenderer {
                     0, 4, 8,
                     0, 2, 7
             },
-            {},
-            {},
-            {
+            {}, // 4
+            {}, // 5
+            {   // 6
                     0, 1, 2,
                     1, 2, 3
             },
-            {
+            {   // 7
                     0, 1, 2
             },
-            {
+            {   // 8
                     0, 1, 2
+            },
+            {   // 9
+                    0, 1, 2,
+                    1, 2, 3
+            },
+            {   // 10
+                    0, 1, 2
+            },
+            {   // 11
+                    0, 1, 2,
+                    1, 2, 3
+            },
+            {   // 12
+                    0, 1, 2
+            },
+            {}, // 13
+            {}, // 14
+            {}, // 15
+            {}, // 16
+            {}, // 17
+            {}, // 18
+            {}, // 19
+            {}, // 20
+            {   // 21
+                    0, 1, 2,
+                    1, 2, 3
+            },
+            {   // 22
+                    0, 1, 2,
+                    1, 2, 3
             }
+
     };
     std::vector<Mesh> meshes;
 
