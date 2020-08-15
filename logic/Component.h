@@ -78,6 +78,8 @@ public:
     Mesh mesh0;
     Mesh mesh1;
 
+    std::string filename;
+
     explicit Component(std::string path) {
         rapidxml::file<> xmlFile(path.c_str()); // Default template is char
         rapidxml::xml_document<> doc;

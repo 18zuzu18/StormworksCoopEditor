@@ -15,6 +15,8 @@
 #include "logic/Component.h"
 #include "logic/ComponentManager.h"
 #include "graphics/SurfaceRenderer.h"
+#include "logic/Vehicle.h"
+#include "graphics/BodyRenderer.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
@@ -100,13 +102,19 @@ int main() {
     std::cout << cm.components.size() << std::endl;
     int ylength = (int) sqrt(cm.components.size());
 
+    // Load Vehicle
+    std::cout << "Loading Vehicle" << std::endl;
+    Vehicle v("C:\\Users\\minec\\AppData\\Roaming\\Stormworks\\data\\vehicles\\water plane joy.xml", cm);
+
     SurfaceRenderer sr;
 
+    BodyRenderer br(&cm);
 
     glEnable(GL_DEPTH_TEST);
 
     rotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
+    std::cout << "Starting Gameloop" << std::endl;
     // Game Loop
     while (!glfwWindowShouldClose(window)) {
         // input
@@ -147,6 +155,10 @@ int main() {
         trans = projection * view * model;
         shader.setMat4("transform", trans);
 
+        for (int j = 0; j < v.bodies.size(); ++j) {
+            br.renderBody(&v.bodies[j], projection, view);
+        }
+        /*
         for (int i = 0; i < cm.components.size(); ++i) {
             model = glm::mat4(1.0f);
             model = glm::translate(model, glm::vec3(((i%ylength)-(int)(ylength/2))*2, (int)((int)(i/ylength)-ylength/2)*2, 0.0f));
@@ -169,7 +181,7 @@ int main() {
                 sr.renderSurfaces(cm.components[i].surfaces, trans);
             }
         }
-
+        */
         // check and call events and swap the buffers
         glfwPollEvents();
         glfwSwapBuffers(window);

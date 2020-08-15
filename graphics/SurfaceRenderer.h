@@ -34,74 +34,90 @@ class SurfaceRenderer {
             180.0f,
             90.0f
     };
+#define COLOR
+
+#ifdef COLOR
+#define RED glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
+#define BLUE glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)
+#define GREEN glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)
+#define PINK glm::vec4(1.0f, 0.0f, 1.0f, 1.0f)
+#define CYAN glm::vec4(0.0f, 1.0f, 1.0f, 1.0f)
+#endif
+#ifndef COLOR
+#define RED glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
+#define BLUE glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
+#define GREEN glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
+#define PINK glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
+#define CYAN glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
+#endif
 
     std::vector<std::vector<Vertex>> vertices = {
             {}, // 0
             {   // 1
-                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), GREEN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, -0.125f, 0.125f), PINK, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), BLUE, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, 0.125f, 0.125f), RED, glm::vec3(0, 0, 1))
             },
             {   // 2
-                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), GREEN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, 0.125f, 0.125f), CYAN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), PINK, glm::vec3(0, 0, 1))
             },
             {   // 3
 #define large 0.0625f
 #define small 0.025888f
-                    Vertex(glm::vec3(0.0f, 0.0f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(large, small, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),  // A
-                    Vertex(glm::vec3(large, -small, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)), // H
-                    Vertex(glm::vec3(-large, small, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)), // D
-                    Vertex(glm::vec3(-large, -small, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),// E
-                    Vertex(glm::vec3(small, large, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),  // B
-                    Vertex(glm::vec3(-small, large, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)), // C
-                    Vertex(glm::vec3(small, -large, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)), // G
-                    Vertex(glm::vec3(-small, -large, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)) // F
+                    Vertex(glm::vec3(0.0f, 0.0f, 0.125f), GREEN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(large, small, 0.125f), GREEN, glm::vec3(0, 0, 1)),  // A
+                    Vertex(glm::vec3(large, -small, 0.125f), PINK, glm::vec3(0, 0, 1)), // H
+                    Vertex(glm::vec3(-large, small, 0.125f), BLUE, glm::vec3(0, 0, 1)), // D
+                    Vertex(glm::vec3(-large, -small, 0.125f), RED, glm::vec3(0, 0, 1)),// E
+                    Vertex(glm::vec3(small, large, 0.125f), GREEN, glm::vec3(0, 0, 1)),  // B
+                    Vertex(glm::vec3(-small, large, 0.125f), PINK, glm::vec3(0, 0, 1)), // C
+                    Vertex(glm::vec3(small, -large, 0.125f), BLUE, glm::vec3(0, 0, 1)), // G
+                    Vertex(glm::vec3(-small, -large, 0.125f), RED, glm::vec3(0, 0, 1)) // F
 #undef large
 #undef small
             },
             {}, // 4
             {}, // 5
             {   // 6
-                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, -0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, 0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), GREEN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, -0.125f, -0.125f), PINK, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), BLUE, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, 0.125f, -0.125f), RED, glm::vec3(0, 0, 1))
             },
             {   // 7
-                    Vertex(glm::vec3(0.125f, -0.125f, -0.125f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, 0.125f, -0.125f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(0.125f, -0.125f, -0.125f), GREEN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, -0.125f), CYAN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), PINK, glm::vec3(0, 0, 1))
             },
             {   // 8
-                    Vertex(glm::vec3(0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, 0.125f, -0.125f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(0.125f, -0.125f, 0.125f), GREEN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, 0.125f, -0.125f), CYAN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), PINK, glm::vec3(0, 0, 1))
             },
             {   // 9
-                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.0f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), GREEN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, -0.125f, 0.125f), PINK, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), BLUE, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, 0.125f, 0.125f), RED, glm::vec3(0, 0, 1))
             },
             {   // 10
-                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.0f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), PINK, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), BLUE, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, 0.125f, 0.125f), RED, glm::vec3(0, 0, 1))
             },
             {   // 11
-                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.0f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), GREEN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, 0.125f, 0.125f), PINK, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), BLUE, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, -0.125f, 0.125f), RED, glm::vec3(0, 0, 1))
             },
             {   // 12
-                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.0f, -0.125f, 0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), PINK, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), BLUE, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, -0.125f, 0.125f), RED, glm::vec3(0, 0, 1))
             },
             {}, // 13
             {}, // 14
@@ -112,19 +128,25 @@ class SurfaceRenderer {
             {}, // 19
             {}, // 20
             {   // 21
-                    Vertex(glm::vec3(0.0f, 0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, 0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.0f, -0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.125f, -0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(0.0f, 0.125f, 0.125f), GREEN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, 0.125f, -0.125f), PINK, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, -0.125f, 0.125f), BLUE, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.125f, -0.125f, -0.125f), RED, glm::vec3(0, 0, 1))
             },
             {   // 22
-                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.0f, 0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(0.0f, -0.125f, -0.125f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0, 0, 1))
+                    Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), GREEN, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, 0.125f, -0.125f), PINK, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(-0.125f, -0.125f, 0.125f), BLUE, glm::vec3(0, 0, 1)),
+                    Vertex(glm::vec3(0.0f, -0.125f, -0.125f), RED, glm::vec3(0, 0, 1))
             }
-
-
+#undef RED
+#undef GREEN
+#undef BLUE
+#undef PINK
+#undef CYAN
+#ifndef COLOR
+#undef COLOR
+#endif
     };
     // grid_square_voxel.mesh
     std::vector<std::vector<unsigned int>> indices = {
