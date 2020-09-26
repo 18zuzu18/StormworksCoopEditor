@@ -38,8 +38,6 @@ const bool drawSurface = true;
 
 int main() {
 
-
-
     std::cout << "Hello Stormworkers" << std::endl;
     // GLFW Init
     glfwInit();
@@ -99,12 +97,12 @@ int main() {
     ComponentManager cm;
     cm.loadComponents();
 
-    std::cout << cm.components.size() << std::endl;
-    int ylength = (int) sqrt(cm.components.size());
+    std::cout << cm.numComponents << std::endl;
+    int ylength = (int) sqrt(cm.numComponents);
 
     // Load Vehicle
     std::cout << "Loading Vehicle" << std::endl;
-    Vehicle v("C:\\Users\\minec\\AppData\\Roaming\\Stormworks\\data\\vehicles\\water plane joy.xml", cm);
+    Vehicle v("C:\\Users\\minec\\AppData\\Roaming\\Stormworks\\data\\vehicles\\vehicle_1.xml", cm);
 
     SurfaceRenderer sr;
 

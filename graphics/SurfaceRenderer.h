@@ -65,19 +65,19 @@ class SurfaceRenderer {
                     Vertex(glm::vec3(-0.125f, 0.125f, 0.125f), PINK, glm::vec3(0, 0, 1))
             },
             {   // 3
-#define large 0.0625f
-#define small 0.025888f
+#define SurfaceRenderer_large 0.0625f
+#define SurfaceRenderer_small 0.025888f
                     Vertex(glm::vec3(0.0f, 0.0f, 0.125f), GREEN, glm::vec3(0, 0, 1)),
-                    Vertex(glm::vec3(large, small, 0.125f), GREEN, glm::vec3(0, 0, 1)),  // A
-                    Vertex(glm::vec3(large, -small, 0.125f), PINK, glm::vec3(0, 0, 1)), // H
-                    Vertex(glm::vec3(-large, small, 0.125f), BLUE, glm::vec3(0, 0, 1)), // D
-                    Vertex(glm::vec3(-large, -small, 0.125f), RED, glm::vec3(0, 0, 1)),// E
-                    Vertex(glm::vec3(small, large, 0.125f), GREEN, glm::vec3(0, 0, 1)),  // B
-                    Vertex(glm::vec3(-small, large, 0.125f), PINK, glm::vec3(0, 0, 1)), // C
-                    Vertex(glm::vec3(small, -large, 0.125f), BLUE, glm::vec3(0, 0, 1)), // G
-                    Vertex(glm::vec3(-small, -large, 0.125f), RED, glm::vec3(0, 0, 1)) // F
-#undef large
-#undef small
+                    Vertex(glm::vec3(SurfaceRenderer_large, SurfaceRenderer_small, 0.125f), GREEN, glm::vec3(0, 0, 1)),  // A
+                    Vertex(glm::vec3(SurfaceRenderer_large, -SurfaceRenderer_small, 0.125f), PINK, glm::vec3(0, 0, 1)), // H
+                    Vertex(glm::vec3(-SurfaceRenderer_large, SurfaceRenderer_small, 0.125f), BLUE, glm::vec3(0, 0, 1)), // D
+                    Vertex(glm::vec3(-SurfaceRenderer_large, -SurfaceRenderer_small, 0.125f), RED, glm::vec3(0, 0, 1)),// E
+                    Vertex(glm::vec3(SurfaceRenderer_small, SurfaceRenderer_large, 0.125f), GREEN, glm::vec3(0, 0, 1)),  // B
+                    Vertex(glm::vec3(-SurfaceRenderer_small, SurfaceRenderer_large, 0.125f), PINK, glm::vec3(0, 0, 1)), // C
+                    Vertex(glm::vec3(SurfaceRenderer_small, -SurfaceRenderer_large, 0.125f), BLUE, glm::vec3(0, 0, 1)), // G
+                    Vertex(glm::vec3(-SurfaceRenderer_small, -SurfaceRenderer_large, 0.125f), RED, glm::vec3(0, 0, 1)) // F
+#undef SurfaceRenderer_large
+#undef SurfaceRenderer_small
             },
             {}, // 4
             {}, // 5

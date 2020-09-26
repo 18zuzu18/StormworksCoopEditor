@@ -236,42 +236,44 @@ public:
             if (meshDataName == "meshes/component_robotic_pivot_b_no_trans.mesh")
                 meshDataName = "meshes/assets_meshes_component_robotic_pivot_b_no_trans.mesh";
             if (std::filesystem::exists(gamepath + this->meshDataName)) {
-                std::vector<Vertex> vertices;
-                std::vector<unsigned int> indices;
-
                 MeshDecoder::decodeMesh(
-                        gamepath + this->meshDataName, &vertices,
-                        &indices);
-                mesh.load(vertices, indices);
+                        gamepath + this->meshDataName, &vertices_m,
+                        &indices_m);
             }
         }
         if (!mesh0Name.empty()) {
             if (mesh0Name == "meshes/component_robotic_pivot_b_no_trans.mesh")
                 mesh0Name = "meshes/assets_meshes_component_robotic_pivot_b_no_trans.mesh";
             if (std::filesystem::exists(gamepath + this->mesh0Name)) {
-                std::vector<Vertex> vertices;
-                std::vector<unsigned int> indices;
-
                 MeshDecoder::decodeMesh(
-                        gamepath + this->mesh0Name, &vertices,
-                        &indices);
-                mesh0.load(vertices, indices);
+                        gamepath + this->mesh0Name, &vertices_m0,
+                        &indices_m0);
             }
         }
         if (!mesh1Name.empty()) {
             if (mesh1Name == "meshes/component_robotic_pivot_b_no_trans.mesh")
                 mesh1Name = "meshes/assets_meshes_component_robotic_pivot_b_no_trans.mesh";
             if (std::filesystem::exists(gamepath + this->mesh1Name)) {
-                std::vector<Vertex> vertices;
-                std::vector<unsigned int> indices;
-
                 MeshDecoder::decodeMesh(
-                        gamepath + this->mesh1Name, &vertices,
-                        &indices);
-                mesh1.load(vertices, indices);
+                        gamepath + this->mesh1Name, &vertices_m1,
+                        &indices_m1);
             }
         }
     }
+
+    // This Function has to run on the Main thread, because of OpenGL
+    void loadMeshes(){
+        mesh.load(vertices_m, indices_m);
+        mesh0.load(vertices_m0, indices_m0);
+        mesh1.load(vertices_m1, indices_m1);
+    }
+
+    std::vector<Vertex> vertices_m;
+    std::vector<unsigned int> indices_m;
+    std::vector<Vertex> vertices_m0;
+    std::vector<unsigned int> indices_m0;
+    std::vector<Vertex> vertices_m1;
+    std::vector<unsigned int> indices_m1;
 
     std::string name;
     std::string longDescription;

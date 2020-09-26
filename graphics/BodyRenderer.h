@@ -38,7 +38,7 @@ public:
             glm::mat4 trans = projection * view * model;
             shader->use();
             shader->setMat4("transform", trans);
-            Component *component = &(cm->components[block->componentId]);
+            Component *component = (cm->components[block->componentId]);
             if (component->mesh.loaded) {
                 shader->use();
                 component->mesh.draw();
