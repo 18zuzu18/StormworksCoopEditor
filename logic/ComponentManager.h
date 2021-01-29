@@ -44,6 +44,7 @@ public:
             data.parent->components[i] = component;
         }
         free(ipath);
+        return nullptr;
     }
 
     void loadComponents() {

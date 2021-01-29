@@ -102,11 +102,13 @@ int main() {
 
     // Load Vehicle
     std::cout << "Loading Vehicle" << std::endl;
-    Vehicle v("C:\\Users\\minec\\AppData\\Roaming\\Stormworks\\data\\vehicles\\vehicle_1.xml", cm);
+    Vehicle v("C:\\Users\\minec\\AppData\\Roaming\\Stormworks\\data\\vehicles\\sp 3.xml", cm);
+
 
     SurfaceRenderer sr;
 
     BodyRenderer br(&cm);
+    br.updateBody(&v.bodies[0], 0);
 
     glEnable(GL_DEPTH_TEST);
 
@@ -153,9 +155,11 @@ int main() {
         trans = projection * view * model;
         shader.setMat4("transform", trans);
 
-        for (int j = 0; j < v.bodies.size(); ++j) {
-            br.renderBody(&v.bodies[j], projection, view);
-        }
+//        for (int j = 0; j < v.bodies.size(); ++j) {
+//            br.renderBody(&v.bodies[j], projection, view);
+//            std::cout << "Blocks: " << (v.bodies[j]).blocks.size() << std::endl;
+//        }
+        br.renderBody(0, projection, view);
         /*
         for (int i = 0; i < cm.components.size(); ++i) {
             model = glm::mat4(1.0f);

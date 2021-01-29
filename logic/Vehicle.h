@@ -163,7 +163,7 @@ public:
                 unsigned char addiC[4];
                 sscanf(o->first_attribute("ac")->value(), "%02hhx%02hhx%02hhx%02hhx", &addiC[0], &addiC[1], &addiC[2],
                        &addiC[3]);
-                block.baseColor = glm::vec4(addiC[0], addiC[1], addiC[2], addiC[3]);
+                block.adaptiveColor = glm::vec4(addiC[0], addiC[1], addiC[2], addiC[3]);
 
                 body.blocks.emplace_back(block);
             }

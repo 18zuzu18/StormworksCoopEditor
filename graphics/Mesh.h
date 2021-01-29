@@ -22,6 +22,8 @@ public:
     unsigned int EBO;
 
     unsigned int indicesCount;
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
 
     void loadfromFile(std::string path) {
         std::vector<Vertex> vertices;
@@ -63,6 +65,8 @@ public:
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
+        this->vertices = vertices;
+        this->indices = indices;
         loaded = true;
     }
 

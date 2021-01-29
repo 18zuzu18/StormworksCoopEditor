@@ -34,7 +34,7 @@ class SurfaceRenderer {
             180.0f,
             90.0f
     };
-#define COLOR
+//#define COLOR
 
 #ifdef COLOR
 #define RED glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
